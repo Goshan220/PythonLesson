@@ -1,5 +1,5 @@
 
-class Familienbuchhaltung:
+class FamilyAccounting:
 
     def __init__(self):
         self.data = [1, 1, 1970]
@@ -13,12 +13,12 @@ class Familienbuchhaltung:
             self.person.pop(0)
 
     #добавить человека
-    def PersonHinzufügen(self, person):
+    def AppPerson(self, person):
         self.person.append(person)
         print(self.person)
 
     #изменить дату
-    def ändernSiedasDatum(self, day, month, year):
+    def ChangeDate(self, day, month, year):
         if (day > 0) & (day < 32) & (month > 0) & (month < 13) & (year > 1970):
             self.data = list([day, month, year])
             print("Date was changed")
@@ -26,14 +26,14 @@ class Familienbuchhaltung:
             print("date format is incorrect \n Date not was changed")
 
     # добавить операцию с деньгами
-    def OperationMitDemGeld(self, summ, person):
+    def AddOperationMoney(self, summ, person):
         file = open('Datenbank.txt', 'a')
         temp = str(self.data) + ":" + self.person[person] + ":" + str(summ) + "\n"
         file.write(temp)
         print("Done")
 
     # расход одного человека
-    def Geldausgeben_Person(self, month, person):
+    def ExpenseOnePerson(self, month, person):
         file = open('Datenbank.txt', 'r')
         person -= 1
         result = 0
@@ -44,7 +44,7 @@ class Familienbuchhaltung:
         return (-result)
 
     # внесение денег одного человека
-    def Geld_verdienen_Person(self, month, person):
+    def AddMoneyPerson(self, month, person):
         file = open('Datenbank.txt', 'r')
         person -= 1
         result = 0
@@ -55,7 +55,7 @@ class Familienbuchhaltung:
         return (result)
 
     # расход всех членов семьи
-    def Verbrauch_aller_Geld(self):
+    def ExpenseAllPerson(self):
         file = open('Datenbank.txt', 'r')
         result = 0
         for line in file:
@@ -65,7 +65,7 @@ class Familienbuchhaltung:
         return (-result)
 
     # внесение от всех членов семьи
-    def Eintragung_aller_Geld(self):
+    def AddMoneyAllPerson(self):
         file = open('Datenbank.txt', 'r')
         result = 0
         for line in file:
@@ -76,4 +76,3 @@ class Familienbuchhaltung:
 
     def __str__(self):
         return "data: " + str(self.data) + "| person: " + str(self.person)
-

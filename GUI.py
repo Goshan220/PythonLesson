@@ -1,7 +1,7 @@
 from tkinter import *
 from PythonGuiGOD import Ui_MainWindow
 from PyQt5.QtWidgets import *
-from Main import Familienbuchhaltung
+from Main import FamilyAccounting
 import threading
 import queue
 
@@ -9,7 +9,7 @@ class GUI(Ui_MainWindow):
     def __init__(self, form):
         super().__init__()
         self.setupUi(form)
-        self.F = Familienbuchhaltung()
+        self.F = FamilyAccounting()
         self.qu = queue.Queue(5)
         self.thread()
 
@@ -20,7 +20,6 @@ class GUI(Ui_MainWindow):
         self.okButton.clicked.connect(self.Add)
         self.comboBox.addItems(self.F.person)
         self.dateTimeEdit.setDisabled(True)
-
 
     def thread(self):
         th = threading.Thread(target=self.worker)
@@ -34,10 +33,10 @@ class GUI(Ui_MainWindow):
             self.qu.task_done()
 
     def showAllCoasts(self):
-        self.qu.put(self.F.Verbrauch_aller_Geld())
+        self.qu.put(self.F.ExpenseAllPerson())
 
     def showAllProceeds(self):
-        self.qu.put(self.F.Eintragung_aller_Geld())
+        self.qu.put(self.F.AddMoneyAllPerson())
 
     def PreAddPeople(self):
         self.dateTimeEdit.setDisabled(True)
@@ -52,7 +51,7 @@ class GUI(Ui_MainWindow):
     def Add(self):
         if (self.dateTimeEdit.isEnabled() == False):
             text = self.rightLine.text()
-            self.qu.put(self.F.PersonHinzufügen(text))
+            self.qu.put(self.F.AppPerson(text))
             self.comboBox.addItem(text)
             print("done")
         else:
@@ -61,10 +60,10 @@ class GUI(Ui_MainWindow):
             data = data[:-1:].split(",")
             for i in range(3):
                 data[i] = data[i].lstrip()
-            self.qu.put(self.F.ändernSiedasDatum(int(data[2]), int(data[1]), int(data[0])))
+            self.qu.put(self.F.ChangeDate(int(data[2]), int(data[1]), int(data[0])))
             text = self.rightLine.text()
             text = str(text).lstrip()
-            self.qu.put(self.F.OperationMitDemGeld(int(text), int(self.comboBox.currentIndex())))
+            self.qu.put(self.F.AddOperationMoney(int(text), int(self.comboBox.currentIndex())))
 
 
         self.rightLine.setText("")

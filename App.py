@@ -1,11 +1,11 @@
-from Main import Familienbuchhaltung
+from Main import FamilyAccounting
 import GUI
 # import multiprocessing
 import threading
 import queue
 
 def console():
-    family = Familienbuchhaltung()
+    family = FamilyAccounting()
     while(True):
         print("********MENU********")
         print("Enter operation: ")
@@ -20,28 +20,28 @@ def console():
         key = int(input(">> "))
         if key == 1:
             print(family.__str__())
-            family.PersonHinzufügen(input("Name: "))
+            family.AppPerson(input("Name: "))
             continue
         elif key == 2:
-            family.ändernSiedasDatum(int(input("Day: ")), int(input("month: ")), int(input("year: ")))
+            family.ChangeDate(int(input("Day: ")), int(input("month: ")), int(input("year: ")))
             continue
         elif key == 3:
             print(family.__str__())
-            family.OperationMitDemGeld(input("Enter summ (minus sign at the beginning means expenses): "), int(input("Number person: ")))
+            family.AddOperationMoney(input("Enter summ (minus sign at the beginning means expenses): "), int(input("Number person: ")))
             continue
         elif key == 4:
             print(family.__str__())
-            print(family.Geldausgeben_Person(int(input("Month: ")), int(input("Number person: "))))
+            print(family.ExpenseOnePerson(int(input("Month: ")), int(input("Number person: "))))
             continue
         elif key == 5:
-            print(family.Verbrauch_aller_Geld())
+            print(family.ExpenseAllPerson())
             continue
         elif key == 6:
             print(family.__str__())
-            print(family.Geld_verdienen_Person(int(input("Month: ")), int(input("Number person: "))))
+            print(family.AddMoneyPerson(int(input("Month: ")), int(input("Number person: "))))
             continue
         elif key == 7:
-            print(family.Eintragung_aller_Geld())
+            print(family.AddMoneyAllPerson())
             continue
         elif key == 8:
             break
