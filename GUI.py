@@ -5,19 +5,20 @@ from Main import FamilyAccounting
 import threading
 import queue
 
+
 class GUI(Ui_MainWindow):
-    def __init__(self, form):
+    def __init__(self, form, file):
         super().__init__()
         self.setupUi(form)
-        self.F = FamilyAccounting()
+        self.F = FamilyAccounting(file)
         self.qu = queue.Queue(5)
         self.thread()
 
-        self.midUpButton.clicked.connect(self.showAllCoasts)
-        self.midDownButton.clicked.connect(self.showAllProceeds)
-        self.rightUpButton.clicked.connect(self.PreAddPeople)
-        self.rightmidButton.clicked.connect(self.PreAddEntry)
-        self.okButton.clicked.connect(self.Add)
+        self.midUpButton.clicked.connect(self.show_all_coasts)
+        self.midDownButton.clicked.connect(self.show_all_proceeds)
+        self.rightUpButton.clicked.connect(self.pre_add_people)
+        self.rightmidButton.clicked.connect(self.pre_add_entry)
+        self.okButton.clicked.connect(self.add)
         self.comboBox.addItems(self.F.person)
         self.dateTimeEdit.setDisabled(True)
 
@@ -32,26 +33,26 @@ class GUI(Ui_MainWindow):
             self.output.setText(str(item))
             self.qu.task_done()
 
-    def showAllCoasts(self):
-        self.qu.put(self.F.ExpenseAllPerson())
+    def show_all_coasts(self):
+        self.qu.put(self.F.expense_all_person())
 
-    def showAllProceeds(self):
-        self.qu.put(self.F.AddMoneyAllPerson())
+    def show_all_proceeds(self):
+        self.qu.put(self.F.add_money_all_person())
 
-    def PreAddPeople(self):
+    def pre_add_people(self):
         self.dateTimeEdit.setDisabled(True)
         self.rightLine.setDisabled(False)
         self.okButton.setDisabled(False)
 
-    def PreAddEntry(self):
+    def pre_add_entry(self):
         self.dateTimeEdit.setDisabled(False)
         self.rightLine.setDisabled(False)
         self.okButton.setDisabled(False)
 
-    def Add(self):
-        if (self.dateTimeEdit.isEnabled() == False):
+    def add(self):
+        if not self.dateTimeEdit.isEnabled():
             text = self.rightLine.text()
-            self.qu.put(self.F.AppPerson(text))
+            self.qu.put(self.F.app_person(text))
             self.comboBox.addItem(text)
             print("done")
         else:
@@ -60,21 +61,25 @@ class GUI(Ui_MainWindow):
             data = data[:-1:].split(",")
             for i in range(3):
                 data[i] = data[i].lstrip()
-            self.qu.put(self.F.ChangeDate(int(data[2]), int(data[1]), int(data[0])))
+            self.qu.put(self.F.change_date(int(data[2]), int(data[1]), int(data[0])))
             text = self.rightLine.text()
             text = str(text).lstrip()
-            self.qu.put(self.F.AddOperationMoney(int(text), int(self.comboBox.currentIndex())))
-
+            self.qu.put(self.F.add_operation_money(int(text), int(self.comboBox.currentIndex())))
 
         self.rightLine.setText("")
         self.rightLine.setDisabled(True)
         self.okButton.setDisabled(True)
 
+
 def run():
+    try:
+        file = open('Datenbank.txt', 'r')
         app = QApplication(sys.argv)
         window = QMainWindow()
-        ui = GUI(window)
+        GUI(window, file)
         window.show()
         sys.exit(app.exec_())
+    finally:
+        file.close()
 
 run()

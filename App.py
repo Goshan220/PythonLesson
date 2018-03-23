@@ -1,12 +1,9 @@
 from Main import FamilyAccounting
-import GUI
-# import multiprocessing
-import threading
-import queue
+
 
 def console():
     family = FamilyAccounting()
-    while(True):
+    while True:
         print("********MENU********")
         print("Enter operation: ")
         print("1: Add person to database")
@@ -20,28 +17,29 @@ def console():
         key = int(input(">> "))
         if key == 1:
             print(family.__str__())
-            family.AppPerson(input("Name: "))
+            family.app_person(input("Name: "))
             continue
         elif key == 2:
-            family.ChangeDate(int(input("Day: ")), int(input("month: ")), int(input("year: ")))
+            family.change_date(int(input("Day: ")), int(input("month: ")), int(input("year: ")))
             continue
         elif key == 3:
             print(family.__str__())
-            family.AddOperationMoney(input("Enter summ (minus sign at the beginning means expenses): "), int(input("Number person: ")))
+            family.add_operation_money(input("Enter summ (minus sign at the beginning means expenses): "),
+                                       int(input("Number person: ")))
             continue
         elif key == 4:
             print(family.__str__())
-            print(family.ExpenseOnePerson(int(input("Month: ")), int(input("Number person: "))))
+            print(family.expense_one_person(int(input("Month: ")), int(input("Number person: "))))
             continue
         elif key == 5:
-            print(family.ExpenseAllPerson())
+            print(family.expense_all_person())
             continue
         elif key == 6:
             print(family.__str__())
-            print(family.AddMoneyPerson(int(input("Month: ")), int(input("Number person: "))))
+            print(family.add_money_person(int(input("Month: ")), int(input("Number person: "))))
             continue
         elif key == 7:
-            print(family.AddMoneyAllPerson())
+            print(family.add_money_all_person())
             continue
         elif key == 8:
             break
@@ -49,14 +47,3 @@ def console():
             print("Error key, enter key again")
             continue
     print("close console")
-
-# def run():
-#     qu = queue.Queue()
-#     qu.put()
-#     t = threading.Thread(target=console)
-#     t.start()
-#     gu = threading.Thread(target=GUI.run)
-#     gu.start()
-#
-#
-# run()
